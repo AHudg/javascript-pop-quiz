@@ -1,0 +1,60 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #FFE4E1;
+    --secondary: #DB7093;
+    --tertiary: #FFC0CB;
+    --white: #FFFAF0;
+    --shadow: rgba(0, 0, 0, 0.5);
+}
+
+body {
+    background-color: var(--primary);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    /* add font-family and characterize the font a little more */
+    color: var(--secondary);
+    font-size: 1.5vw;
+    padding: 10px 30px;
+}
+
+main {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3vw;
+    color:var(--secondary);
+}
+
+.focal-pt-bg {
+    background-color: var(--secondary);
+    border-radius: 20px;
+    margin-top: 50px;
+    box-shadow: 0 0 10px var(--shadow);
+}
+
+main p {
+    font-size: 1.5vw;
+    line-height: 1.5;
+    padding: 20px;
+    color:var(--primary);
+}
+
+button {
+    background-color: var(--tertiary);
+    border-radius: 10px;
+    border: none;
+    color: var(--secondary);
+    padding: 10px;
+    font-size: 1.5vw;
+    /* put the box shadow for when someone hovers over the button */
+    box-shadow: 0 0 10px var(--secondary);
+}
