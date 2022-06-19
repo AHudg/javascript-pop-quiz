@@ -7,6 +7,7 @@
     --secondary: #DB7093;
     --tertiary: #FFC0CB;
     --white: #FFFAF0;
+    --black: #0000;
     --shadow: rgba(0, 0, 0, 0.5);
 }
 
@@ -31,7 +32,7 @@ main {
 
 h1 {
     font-size: 3vw;
-    color:var(--secondary);
+    color: var(--secondary);
 }
 
 .focal-pt-bg {
@@ -42,10 +43,10 @@ h1 {
 }
 
 main p {
-    font-size: 1.5vw;
+    font-size: 2vw;
     line-height: 1.5;
     padding: 20px;
-    color:var(--primary);
+    color: var(--primary);
 }
 
 button {
