@@ -35,6 +35,13 @@ h1 {
     color: var(--secondary);
 }
 
+main p {
+    font-size: 2vw;
+    line-height: 1.5;
+    padding: 20px;
+    color: var(--primary);
+}
+
 .focal-pt-bg {
     background-color: var(--secondary);
     border-radius: 20px;
@@ -42,11 +49,31 @@ h1 {
     box-shadow: 0 0 10px var(--shadow);
 }
 
-main p {
-    font-size: 2vw;
-    line-height: 1.5;
-    padding: 20px;
+.answer-list {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.answers {
+    padding: 8px;
+    margin: 3px;
+    width: 20%;
+    background-color: var(--secondary);
+    border-radius: 5px;
     color: var(--primary);
+    font-size: 2vw;
+}
+
+.answers-hover {
+    padding: 8px;
+    margin: 3px;
+    width: 20%;
+    background-color: var(--tertiary);
+    border-radius: 5px;
+    color: var(--secondary);
+    font-size: 2vw;
 }
 
 button {
