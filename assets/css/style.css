@@ -83,6 +83,9 @@ button {
     color: var(--secondary);
     padding: 10px;
     font-size: 1.5vw;
-    /* put the box shadow for when someone hovers over the button */
     box-shadow: 0 0 10px var(--secondary);
+}
+
+button:hover {
+    color: var(--primary);
 }
