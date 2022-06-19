@@ -61,8 +61,8 @@ ansObjFive = {
 // places those objects in an array at the same index as their corresponding question
 var answersArray = [ansObjOne, ansObjTwo, ansObjThree, ansObjFour, ansObjFive];
 
-// creates an array with the correct string answer
-var correctArray = ["Alerts","Parenthesis","All of the above","Quotes","Console.log"];
+// // creates an array with the correct string answer
+// var correctArray = ["Alerts","Parenthesis","All of the above","Quotes","Console.log"];
 
 var startQuiz = function() {
     // calls the timer to start counting down (keeping score)
@@ -87,18 +87,6 @@ var startQuiz = function() {
 
     // when one of the list items are selected, call functiong nextQuestion()
     orderEl.addEventListener("click", updateTimer);
-};
-
-var updateTimer = function(event) {
-    var element = event.target;
-    console.log(element);
-    console.dir(element);
-    if (element.textContent === correctArray[arrayIndex]) {
-        timeLeft += 5;
-    } else {
-        timeLeft -= 10;
-    }
-    return nextQuestion();
 };
 
 // function changes the text to iterate through the questions/answers and styles accordingly
@@ -146,22 +134,21 @@ var createQuiz = function() {
         listItemFourEl.className = "answers";
     });
 
-    // return arrayIndex++;
 };
 
-// function to add/subtract timer/score and proceed to the next question
-var nextQuestion = function() {
-    arrayIndex++;
-    quizQuestionEl.textContent = questionArray[arrayIndex];
-    listItemOneEl.textContent = answersArray[arrayIndex].ansOne;
-    listItemTwoEl.textContent = answersArray[arrayIndex].ansTwo;
-    listItemThreeEl.textContent = answersArray[arrayIndex].ansThree;
-    listItemFourEl.textContent = answersArray[arrayIndex].ansFour;
+var updateTimer = function(event) {
+    var element = event.target;
 
-    listItemOneEl.className = "answers";
-    listItemTwoEl.className = "answers";
-    listItemThreeEl.className = "answers";
-    listItemFourEl.className = "answers";
+    // creates an array with the correct string answer
+    var correctArray = ["Alerts","Parenthesis","All of the above","Quotes","Console.log"];
+
+    if (element.textContent === correctArray[arrayIndex]) {
+        timeLeft += 5;
+    } else {
+        timeLeft -= 10;
+    }
+    arrayIndex++;
+    return createQuiz();
 };
 
 // creates the function that will house the score (timer) and count down
