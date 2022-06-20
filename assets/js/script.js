@@ -23,8 +23,8 @@ var listItemFourEl = document.createElement('li');
 // initialize an array to be used like a for loops but waits to iterate only after a <li> is clicked
 var arrayIndex = 0;
 
- // creates the array containing each question to be iterated through
- var questionArray = ["Which of the following is NOT a commonly used data type?","The condition in an if/else statement is enclosed with ___?","Arrays in JavaScript can be used to store which of the following data types?","String values must be enclosed within ___ when being assigned to variables?","A very useful tool used during development and debugging for printing content to the debugger is?"];
+// creates the array containing each question to be iterated through
+var questionArray = ["Which of the following is NOT a commonly used data type?","The condition in an if/else statement is enclosed with ___?","Arrays in JavaScript can be used to store which of the following data types?","String values must be enclosed within ___ when being assigned to variables?","A very useful tool used during development and debugging for printing content to the debugger is?"];
 
 var startQuiz = function() {
     // calls the timer to start counting down (keeping score)
@@ -210,8 +210,16 @@ var endQuiz = function() {
     inputEl.setAttribute('style','padding:5px; border: 3px solid var(--secondary); border-radius: 5px;');
 
     var submitBtnEl = document.createElement("button");
-    submitBtnEl.textContent = "Submit!";
-    // need to link button press to submit to localStorage for highscores
+    submitBtnEl.textContent = "Save";
+    submitBtnEl.addEventListener("click", function(event) {
+        event.preventDefault();
+        
+        highscoreObj = {
+            initial: inputEl.value,
+            score: timeLeft,
+        };
+        console.log(highscoreObj);
+    });
 
     quizEl.appendChild(endText);
     endText.appendChild(formEl);
