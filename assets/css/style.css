@@ -26,6 +26,11 @@ header {
     padding: 30px;
 }
 
+a {
+    text-decoration: none;
+    color: var(--secondary);
+}
+
 main {
     width: 80%;
     margin: auto;
