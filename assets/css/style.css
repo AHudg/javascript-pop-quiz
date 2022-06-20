@@ -1,5 +1,7 @@
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 :root {
@@ -8,7 +10,7 @@
     --tertiary: #FFC0CB;
     --white: #FFFAF0;
     --black: #0000;
-    --shadow: rgba(0, 0, 0, 0.5);
+    --shadow: rgba(219, 122, 147, 0.75);
 }
 
 body {
@@ -21,7 +23,7 @@ header {
     /* add font-family and characterize the font a little more */
     color: var(--secondary);
     font-size: 1.5vw;
-    padding: 10px 30px;
+    padding: 30px;
 }
 
 main {
@@ -45,7 +47,8 @@ main p {
 .focal-pt-bg {
     background-color: var(--secondary);
     border-radius: 20px;
-    margin-top: 50px;
+    margin-top: 20px;
+    /* padding: 10px; */
     box-shadow: 0 0 10px var(--shadow);
 }
 
@@ -54,6 +57,7 @@ main p {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 10px;
 }
 
 .answers {
@@ -64,6 +68,7 @@ main p {
     border-radius: 5px;
     color: var(--primary);
     font-size: 2vw;
+    list-style-type: none;
 }
 
 .answers-hover {
@@ -74,6 +79,7 @@ main p {
     border-radius: 5px;
     color: var(--secondary);
     font-size: 2vw;
+    list-style-type: none;
 }
 
 button {
@@ -84,8 +90,15 @@ button {
     padding: 10px;
     font-size: 1.5vw;
     box-shadow: 0 0 10px var(--secondary);
+    margin: 20px;
 }
 
 button:hover {
     color: var(--primary);
 }
+
+input:focus {
+    box-shadow: 0 0 10px var(--shadow);
+    outline: none;
+}
+

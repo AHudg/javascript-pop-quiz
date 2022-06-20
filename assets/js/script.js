@@ -1,5 +1,5 @@
 // Initializes the timer/score
-var timeLeft = 75;
+var timeLeft = 10;
 // creates our DOM element for the score (timer)
 var scoreEl = document.getElementById("score");
 
@@ -23,6 +23,9 @@ var listItemFourEl = document.createElement('li');
 // initialize an array to be used like a for loops but waits to iterate only after a <li> is clicked
 var arrayIndex = 0;
 
+ // creates the array containing each question to be iterated through
+ var questionArray = ["Which of the following is NOT a commonly used data type?","The condition in an if/else statement is enclosed with ___?","Arrays in JavaScript can be used to store which of the following data types?","String values must be enclosed within ___ when being assigned to variables?","A very useful tool used during development and debugging for printing content to the debugger is?"];
+
 var startQuiz = function() {
     // calls the timer to start counting down (keeping score)
     countdown();
@@ -33,7 +36,7 @@ var startQuiz = function() {
     quizEl.setAttribute('style','border: #DB7093 5px solid; background:#FFE4E1;');
 
     // styles the question
-    quizQuestionEl.setAttribute('style','color: var(--secondary); font-weight:bold; padding:5px');
+    quizQuestionEl.setAttribute('style','color: var(--secondary); font-weight:bold; padding: 0; margin:10px');
 
     // append the list items that were populated at initialization to the <ol>
     orderEl.appendChild(listItemOneEl);
@@ -50,8 +53,6 @@ var startQuiz = function() {
 
 // function changes the text to iterate through the questions/answers and styles accordingly
 var createQuiz = function() {
-    // creates the array containing each question to be iterated through
-    var questionArray = ["Which of the following is NOT a commonly used data type?","The condition in an if/else statement is enclosed with ___?","Arrays in JavaScript can be used to store which of the following data types?","String values must be enclosed within ___ when being assigned to variables?","A very useful tool used during development and debugging for printing content to the debugger is?"];
 
     // creates five objects that contain the four answer choices
     ansObjOne = {
@@ -91,8 +92,6 @@ var createQuiz = function() {
 
     // places those objects in an array at the same index as their corresponding question
     var answersArray = [ansObjOne, ansObjTwo, ansObjThree, ansObjFour, ansObjFive];
-
-    if (arrayIndex < questionArray.length) {
 
         quizQuestionEl.textContent = questionArray[arrayIndex];
         listItemOneEl.textContent = answersArray[arrayIndex].ansOne;
@@ -136,9 +135,6 @@ var createQuiz = function() {
         listItemFourEl.addEventListener("mouseout",function(event) {
             listItemFourEl.className = "answers";
         });
-    } else {
-        endQuiz();
-    };
 };
 
 var updateTimer = function(event) {
@@ -149,37 +145,100 @@ var updateTimer = function(event) {
 
     if (element.textContent === correctArray[arrayIndex]) {
         timeLeft += 5;
+        scoreEl.textContent = "Your score: " + timeLeft;
     } else {
         timeLeft -= 10;
+        if (timeLeft < 0) {
+            scoreEl.textContent = "";
+        } else {
+        scoreEl.textContent = "Your score: " + timeLeft;
+        };
     }
 
     arrayIndex++;
-    return createQuiz();
-};
-
-var endQuiz = function() {
-    alert('You have won!');
+    if (arrayIndex < questionArray.length) {
+        return createQuiz();
+    };
 };
 
 // creates the function that will house the score (timer) and count down
 var countdown = function() {
     // use the setInterval to call this function every 1000 ms
     var firstInterval = setInterval(function() {
-        // as long as time is left...
-        if (timeLeft > 0) {
+        // as long as time is left and you are still on a quiz question...
+        if (timeLeft > 0 && arrayIndex < questionArray.length) {
             // set the text to set "Your score: ___"
             scoreEl.textContent = "Your score: " + timeLeft;
             // decrement the score (time) by 1
             timeLeft--;
+        } 
+        //
+        else if (timeLeft > 0 && arrayIndex >= questionArray.length) {
+            clearInterval(firstInterval);
+            endQuiz();
+        }
         // when the score (time) reaches 0...
-        } else {
-            // erase the score (timer) completely
-            scoreEl.textContent = "";
+        else {
             // stop the interval from continuing to run
             clearInterval(firstInterval);
-            alert("You've run out of time!");
+            loser();
         };
     }, 1000); //for 1000ms
+};
+
+var endQuiz = function() {
+    scoreEl.textContent = "";
+    orderEl.setAttribute('style','display:none');
+    quizQuestionEl.textContent = "Congratulations! You have finished the quiz with a score of " + timeLeft + "!";
+
+    var endText = document.createElement("p");
+    endText.textContent = "Don't forget to submit your score to the highscores below:";
+    endText.setAttribute('style','color:var(--secondary); padding:0;');
+
+    var formEl = document.createElement("form");
+
+    var labelEl = document.createElement("label");
+    labelEl.setAttribute('for',"initials");
+    labelEl.textContent = "Initials:";
+    labelEl.setAttribute('style','padding: 5px;')
+
+    var inputEl = document.createElement("input");
+    inputEl.setAttribute('type',"text");
+    inputEl.setAttribute('name',"initials");
+    inputEl.setAttribute('placeholder','ADH');
+    inputEl.setAttribute('id',"initials");
+    inputEl.setAttribute('style','padding:5px; border: 3px solid var(--secondary); border-radius: 5px;');
+
+    var submitBtnEl = document.createElement("button");
+    submitBtnEl.textContent = "Submit!";
+    // need to link button press to submit to localStorage for highscores
+
+    quizEl.appendChild(endText);
+    endText.appendChild(formEl);
+    formEl.appendChild(labelEl);
+    formEl.appendChild(inputEl);
+    formEl.appendChild(submitBtnEl);
+
+};
+
+var loser = function() {
+    scoreEl.textContent = "";
+
+    orderEl.setAttribute('style','display:none');
+
+    quizQuestionEl.textContent = "Uh oh! Looks like you ran out of time :/";
+
+    var loserText = document.createElement("p");
+    loserText.textContent = "Don't worry though! I encourage you to try again!";
+    loserText.setAttribute('style','color:var(--secondary); padding:0;');
+
+    var retryBtnEl = document.createElement("button");
+    retryBtnEl.textContent = "Retry!"
+    retryBtnEl.setAttribute('onClick','window.location.reload()');
+
+    quizEl.appendChild(loserText);
+    quizEl.appendChild(retryBtnEl);
+
 };
 
 // so I get rid of the parenthesis behind this function? With parenthesis it runs automaticall- w/o them it waits like expected.
