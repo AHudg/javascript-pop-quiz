@@ -26,6 +26,8 @@ var arrayIndex = 0;
 // creates the array containing each question to be iterated through
 var questionArray = ["Which of the following is NOT a commonly used data type?","The condition in an if/else statement is enclosed with ___?","Arrays in JavaScript can be used to store which of the following data types?","String values must be enclosed within ___ when being assigned to variables?","A very useful tool used during development and debugging for printing content to the debugger is?"];
 
+// var arrayHighscores = [];
+
 var startQuiz = function() {
     // calls the timer to start counting down (keeping score)
     countdown();
@@ -211,15 +213,7 @@ var endQuiz = function() {
 
     var submitBtnEl = document.createElement("button");
     submitBtnEl.textContent = "Save";
-    submitBtnEl.addEventListener("click", function(event) {
-        event.preventDefault();
-        
-        highscoreObj = {
-            initial: inputEl.value,
-            score: timeLeft,
-        };
-        console.log(highscoreObj);
-    });
+    submitBtnEl.addEventListener("click", saveHighscores);
 
     quizEl.appendChild(endText);
     endText.appendChild(formEl);
@@ -228,6 +222,47 @@ var endQuiz = function() {
     formEl.appendChild(submitBtnEl);
 
 };
+
+var saveHighscores = function(event) {
+    event.preventDefault();
+    var inputEl = document.getElementById("initials");
+
+    highscoreObj = {
+        initial: inputEl.value,
+        score: timeLeft,
+    };
+
+    inputEl.value = "";
+
+    arrayHighscores = JSON.parse(localStorage.getItem("Highscores"));
+
+    if (!arrayHighscores) {
+        arrayHighscores = [];
+    }
+
+    arrayHighscores.push(highscoreObj);
+    // You can save multiple times on one instance- it is a limitation
+
+    // Sorts the array
+    if (arrayHighscores.length > 1) {
+
+        arrayHighscores.sort((a,b) => {
+            return b.score - a.score;
+        });
+        console.log(arrayHighscores);
+    }
+
+    localStorage.setItem("Highscores", JSON.stringify(arrayHighscores));
+}
+
+var loadHighscores = function() {
+    arrayHighscores = JSON.parse(localStorage.getItem("Highscores"));
+
+    // if nothing in localStorage, create a new object to track the highscores
+    if (!arrayHighscores) {
+        alert("No highscores");
+    }
+}
 
 var loser = function() {
     scoreEl.textContent = "";
@@ -251,3 +286,4 @@ var loser = function() {
 
 // so I get rid of the parenthesis behind this function? With parenthesis it runs automaticall- w/o them it waits like expected.
 beginBtnEl.addEventListener("click", startQuiz);
+// loadHighscores();
