@@ -1,13 +1,16 @@
 // Initializes the timer/score
-var timeLeft = 10;
+var timeLeft = 20;
 // creates our DOM element for the score (timer)
 var scoreEl = document.getElementById("score");
+
+var body = document.querySelector("body");
 
 // creates our DOM element for the <div> containing the quiz questions/answers
 var quizEl = document.querySelector("div[class='focal-pt-bg']");
 // creates our DOM element for the button to start the quiz
 var beginBtnEl = document.querySelector("button[name='begin']");
 
+var viewHighscore = document.querySelector("button[name='scores']")
 
 // creates our DOM element for the <p> that is the quiz question
 var quizQuestionEl = document.getElementById("quiz-questions");
@@ -26,11 +29,11 @@ var arrayIndex = 0;
 // creates the array containing each question to be iterated through
 var questionArray = ["Which of the following is NOT a commonly used data type?","The condition in an if/else statement is enclosed with ___?","Arrays in JavaScript can be used to store which of the following data types?","String values must be enclosed within ___ when being assigned to variables?","A very useful tool used during development and debugging for printing content to the debugger is?"];
 
-// var arrayHighscores = [];
-
 var startQuiz = function() {
     // calls the timer to start counting down (keeping score)
     countdown();
+
+    viewHighscore.setAttribute('style','display: none');
     
     // display: none to hide the Start Quiz button
     beginBtnEl.setAttribute('style','display: none');
@@ -194,10 +197,12 @@ var endQuiz = function() {
     quizQuestionEl.textContent = "Congratulations! You have finished the quiz with a score of " + timeLeft + "!";
 
     var endText = document.createElement("p");
+    endText.setAttribute('id','endText');
     endText.textContent = "Don't forget to submit your score to the highscores below:";
     endText.setAttribute('style','color:var(--secondary); padding:0;');
 
     var formEl = document.createElement("form");
+    formEl.setAttribute('id','form');
 
     var labelEl = document.createElement("label");
     labelEl.setAttribute('for',"initials");
@@ -220,7 +225,6 @@ var endQuiz = function() {
     formEl.appendChild(labelEl);
     formEl.appendChild(inputEl);
     formEl.appendChild(submitBtnEl);
-
 };
 
 var saveHighscores = function(event) {
@@ -249,19 +253,168 @@ var saveHighscores = function(event) {
         arrayHighscores.sort((a,b) => {
             return b.score - a.score;
         });
-        console.log(arrayHighscores);
+        
+        if (arrayHighscores.length > 5) {
+            arrayHighscores.splice(5, arrayHighscores.length-5);
+        }
     }
 
     localStorage.setItem("Highscores", JSON.stringify(arrayHighscores));
+
+    window.location.reload();
 }
 
 var loadHighscores = function() {
-    arrayHighscores = JSON.parse(localStorage.getItem("Highscores"));
+    if (viewHighscore.textContent === "View Highscores") {
+        viewHighscore.textContent = "Return";
+        quizEl.setAttribute('style','border: #DB7093 5px solid; background:#FFE4E1;');
+        quizQuestionEl.setAttribute('style','color: var(--secondary); font-weight:bold; padding: 0; margin:10px');
+        beginBtnEl.setAttribute('style','display: none');
+        orderEl.setAttribute('style','display: none');
 
-    // if nothing in localStorage, create a new object to track the highscores
-    if (!arrayHighscores) {
-        alert("No highscores");
+        quizQuestionEl.textContent = "Highscores List";
+        makeTable();
+
+        arrayHighscores = JSON.parse(localStorage.getItem("Highscores"));
+
+        if (!arrayHighscores) {
+            arrayHighscores = [];
+        }
+
+        if (arrayHighscores.length < 5) {
+            highscoreObj = {
+                initial: "None",
+                score: "N/A",
+            };
+
+            switch(arrayHighscores.length) {
+                case 4:
+                    arrayHighscores.splice(4,0,highscoreObj);
+                    break;
+                case 3:
+                    arrayHighscores.splice(3,0,highscoreObj,highscoreObj);
+                    break;
+                case 2:
+                    arrayHighscores.splice(2,0,highscoreObj,highscoreObj,highscoreObj);
+                    break;
+                case 1:
+                    arrayHighscores.splice(1,0,highscoreObj,highscoreObj,highscoreObj,highscoreObj);
+                    break;
+                default:
+                    arrayHighscores.splice(0,0,highscoreObj,highscoreObj,highscoreObj,highscoreObj,highscoreObj);
+
+            }
+        }
+
+        tableInitialOneEl.textContent = arrayHighscores[0].initial;
+        tableScoreOneEl.textContent = arrayHighscores[0].score;
+
+        tableInitialTwoEl.textContent = arrayHighscores[1].initial;
+        tableScoreTwoEl.textContent = arrayHighscores[1].score;
+
+        tableInitialThreeEl.textContent = arrayHighscores[2].initial;
+        tableScoreThreeEl.textContent = arrayHighscores[2].score;
+
+        tableInitialFourEl.textContent = arrayHighscores[3].initial;
+        tableScoreFourEl.textContent = arrayHighscores[3].score;
+
+        tableInitialFiveEl.textContent = arrayHighscores[4].initial;
+        tableScoreFiveEl.textContent = arrayHighscores[4].score;
+
+        var clearScores = document.createElement("button");
+        clearScores.textContent = "Clear Highscores";
+        quizEl.appendChild(clearScores);
+
+
+    } else if (viewHighscore.textContent === "Return") {
+        window.location.reload();
     }
+}
+
+var makeTable = function() {
+    // creates the table DOM element
+    tableEl = document.createElement("table");
+    // creates the first row containing the 'Initials' and 'Scores' labels for table
+    tableRowLabelEl = document.createElement("tr");
+    tableInitialEl = document.createElement("th");
+    tableInitialEl.setAttribute('bgcolor',"#DB7093");
+    tableScoreEl = document.createElement("th");
+    tableScoreEl.setAttribute('bgcolor',"#DB7093");
+
+    // creates the second row of the table- the first row of actual highscores
+    tableRowOneEl = document.createElement("tr");
+    tableInitialOneEl = document.createElement("td");
+    tableInitialOneEl.setAttribute('bgcolor','#FFC0CB')
+    tableScoreOneEl = document.createElement("td");
+    tableScoreOneEl.setAttribute('bgcolor','#FFC0CB');
+
+    // creates the third row of the table- the second row of actual highscores
+    tableRowTwoEl = document.createElement("tr");
+    tableInitialTwoEl = document.createElement("td");
+    tableInitialTwoEl.setAttribute('bgcolor',"#DB7093");
+    tableScoreTwoEl = document.createElement("td");
+    tableScoreTwoEl.setAttribute('bgcolor',"#DB7093");
+
+    // creates the fourth row of the table- the third row of actual highscores
+    tableRowThreeEl = document.createElement("tr");
+    tableInitialThreeEl = document.createElement("td");
+    tableInitialThreeEl.setAttribute('bgcolor','#FFC0CB');
+    tableScoreThreeEl = document.createElement("td");
+    tableScoreThreeEl.setAttribute('bgcolor','#FFC0CB');
+
+    // creates the fifth row of the table- the fourth row of actual highscores
+    tableRowFourEl = document.createElement("tr");
+    tableInitialFourEl = document.createElement("td");
+    tableInitialFourEl.setAttribute('bgcolor',"#DB7093");
+    tableScoreFourEl = document.createElement("td");
+    tableScoreFourEl.setAttribute('bgcolor',"#DB7093");
+
+    // creates the sixth row of the table- the fifth row of actual highscores
+    tableRowFiveEl = document.createElement("tr");
+    tableInitialFiveEl = document.createElement("td");
+    tableInitialFiveEl.setAttribute('bgcolor','#FFC0CB');
+    tableScoreFiveEl = document.createElement("td");
+    tableScoreFiveEl.setAttribute('bgcolor','#FFC0CB');
+
+    var flexDiv = document.createElement("div");
+    flexDiv.className = "flex";
+    quizEl.appendChild(flexDiv);
+
+    // appends the table to the div
+    flexDiv.appendChild(tableEl);
+
+    //appends row one and it's table headers
+    tableEl.appendChild(tableRowLabelEl);
+    tableRowLabelEl.appendChild(tableInitialEl);
+    tableRowLabelEl.appendChild(tableScoreEl);
+
+    // appends row two and the first initials/score
+    tableEl.appendChild(tableRowOneEl);
+    tableRowOneEl.appendChild(tableInitialOneEl);
+    tableRowOneEl.appendChild(tableScoreOneEl);
+
+    // appends row three and the second initials/score
+    tableEl.appendChild(tableRowTwoEl);
+    tableRowTwoEl.appendChild(tableInitialTwoEl);
+    tableRowTwoEl.appendChild(tableScoreTwoEl);    
+
+    // appends row four and the third initials/score
+    tableEl.appendChild(tableRowThreeEl);
+    tableRowThreeEl.appendChild(tableInitialThreeEl);
+    tableRowThreeEl.appendChild(tableScoreThreeEl); 
+
+    // appends row five and the fourth initials/score
+    tableEl.appendChild(tableRowFourEl);
+    tableRowFourEl.appendChild(tableInitialFourEl);
+    tableRowFourEl.appendChild(tableScoreFourEl); 
+
+    // appends row six and the fifth initials/score
+    tableEl.appendChild(tableRowFiveEl);
+    tableRowFiveEl.appendChild(tableInitialFiveEl);
+    tableRowFiveEl.appendChild(tableScoreFiveEl); 
+
+    tableInitialEl.textContent = "Initials";
+    tableScoreEl.textContent = "Scores";
 }
 
 var loser = function() {
@@ -284,6 +437,30 @@ var loser = function() {
 
 };
 
+var clearHighscores = function(event) {
+    var targetEl = event.target;
+
+    if (targetEl.textContent === "Clear Highscores") {
+        localStorage.clear();
+
+        tableInitialOneEl.textContent = "None";
+        tableScoreOneEl.textContent = "N/A";
+
+        tableInitialTwoEl.textContent = "None";
+        tableScoreTwoEl.textContent = "N/A";
+
+        tableInitialThreeEl.textContent = "None";
+        tableScoreThreeEl.textContent = "N/A";
+
+        tableInitialFourEl.textContent = "None";
+        tableScoreFourEl.textContent = "N/A";
+
+        tableInitialFiveEl.textContent = "None";
+        tableScoreFiveEl.textContent = "N/A";
+    }
+};
+
 // so I get rid of the parenthesis behind this function? With parenthesis it runs automaticall- w/o them it waits like expected.
 beginBtnEl.addEventListener("click", startQuiz);
-// loadHighscores();
+viewHighscore.addEventListener("click", loadHighscores);
+body.addEventListener("click",clearHighscores);

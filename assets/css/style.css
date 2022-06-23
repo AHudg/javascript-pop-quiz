@@ -26,11 +26,6 @@ header {
     padding: 30px;
 }
 
-a {
-    text-decoration: none;
-    color: var(--secondary);
-}
-
 main {
     width: 80%;
     margin: auto;
@@ -107,3 +102,20 @@ input:focus {
     outline: none;
 }
 
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
+table {
+    width: 50%;
+    margin: 10px;
+}
+
+th {
+    padding: 8px;
+}
+
+td {
+    padding: 8px;
+}
