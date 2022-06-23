@@ -23,4 +23,10 @@ The entire quiz is populated on one single page of HTML that is dynamically mani
 
 ![A screenshot demonstrating the different ways JavaScript DOM Manipulation was used](./assets/images/DOMmanipulationsREAD.png)
 
-View the live page [here]()
+## Limitations
+Besides making the code more robust and reworking some personal inadequacies- the biggest flaw or limitation that I didn't get a chance to fix was that ~technically~ you can click the empty space on either side of the quiz answers to select that answer and progress through the quiz. Another quick fix is to write an if statement surrounding the save highscore input that doesn't allow you to input an empty field.
+
+View the live page [here](https://ahudg.github.io/javascript-pop-quiz/)
+
+## Contributions
+Made by Andrew Hudgins :)
